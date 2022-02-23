@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="p-3 m-3">
+        <div class="col-lg-5 rounded mx-auto border pt-4">
+            <h3 class="alert alert-success rounded-pill" style="text-align:center">Stvori račun</h3>
+            <form action="/registracija" method="POST">
+                {% csrf_token %}
+                {% if error%}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="">Ime</label>
+                    <input type="text" name="ime"
+                     id="" value="{{values.ime}}" class="form-control form-control-sm" >
+                </div>
+
+                <div class="form-group">
+                    <label for="">Prezime</label>
+                    <input type="text" name="prezime" 
+                    id="" value="{{values.prezime}}" class="form-control form-control-sm"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="">Telefon</label>
+                    <input type="text" name="telefon" 
+                    id="" class="form-control form-control-sm"
+                    value="{{values.telefon}}"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input required type="email" name="email" id=""
+                    value="{{values.email}}" 
+                    class=" form-control-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Lozinka</label>
+                    <input type="password" 
+                    name="lozinka" 
+                    id=""
+                     class="form-control form-control-sm">
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-sm btn-success col-lg-12">Stvori račun</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

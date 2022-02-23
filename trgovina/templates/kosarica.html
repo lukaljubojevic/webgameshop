@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load filter_kosarica %}
+{% load dodatni_filter %}
+<div class="container">
+   <div class="border rounded p-4 m-4">
+        <p>Vaša košarica</p>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rbr.</th>
+                    <th>Slika</th>
+                    <th>Proizvod</th>
+                    <th>Cijena</th>
+                    <th>Količina</th>
+                    <th>Ukupno</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for p in proizvodi %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 80px;" class="rounded-circle" src="{{p.slika.url}}" alt=""></td>
+                    <td>{{p.naziv}}</td>
+                    <td>{{p.cijena}}</td>
+                    <td>{{p|kosarica_kolicina:request.session.kosarica}}</td>
+                    <td>{{p|ukupna_cijena:request.session.kosarica|valuta}}</td>
+
+                {% endfor %}  
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Ukupno</th>
+                    <th>{{proizvodi|cijena_kosarice:request.session.kosarica|valuta}}</th>
+                </tr>
+            </tfoot>
+        </table>
+        <hr>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load filter_kosarica %}
+{% load dodatni_filter %}
+
+<div class="container-fluid mt-3">
+<div class="row">
+    <div class="col-lg-3 mx-auto">
+        <div class="list-group">
+            <a href="/" class="list-group-item list-group-item-action btn btn-outline-success">Svi proizvodi</a>
+            {% for k in kategorija %}
+            <a href="/?kategorija={{k.id}}"
+                class="list-group-item list-group-item-action btn btn-outline-success ">{{k.naziv}}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id='p' class="col-lg-9 mx-auto">
+        <div class="row mx-auto">
+            {% for p in proizvodi %}
+            <div class="card mx-auto mb-3" id={{p.id}} style="width: 18rem;">
+                <img class="card-img-top" src="{{p.slika.url}}" alt="Slika">
+                <div class="card-body">
+                    <p class="card-title">{{p.naziv}}</p>
+                    <p class="card-body"><b>{{p.opis}}</b></p>
+                    <p class="card-text"><b>{{p.cijena|valuta}}</b></p>
+                </div>
+
+                <div class="card-footer p-0 no-gutters">
+                    {% if p|je_u_kosarici:request.session.kosarica %}
+                    <div class="row no-gutters">
+                        <form action="/#{{p.id}}" class="col-2 " method="post">
+                            {% csrf_token %}
+                            <input hidden type="text" name='p' value='{{p.id}}'>
+                            <input hidden type="text" name='remove' value='True'>
+                            <input type="submit" value=" - " class="btn btn-block btn-success border-right">
+                        </form>
+                        <div class="text-center col btn btn-success">{{p|kosarica_kolicina:request.session.kosarica}} je u košarici</div>
+                        <form action="/#{{p.id}}" class="col-2 " method="post">
+                            {% csrf_token %}
+                            <input hidden type="text" name='p' value='{{p.id}}'>
+                            <input type="submit" value=" + " class="btn btn-block btn-success border-left">
+                        </form>
+                    </div>
+                    {% else %}
+                    <form action="/#{{p.id}}" method="POST" class="btn-block">
+                        {% csrf_token %}
+                        <input hidden type="text" name='p' value='{{p.id}}'>
+                        <input type="submit" class="float-right btn btn-success form-control"
+                            value="Dodaj u košaricu">
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+{% endblock %}
